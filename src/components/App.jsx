@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import reactLogo from '/react.svg';
 import neutralinoLogo from '/neutralino-logo.gif';
-import './App.css';
+import '../styles/App.css';
 
 Neutralino.filesystem.writeFile('./test.txt', 'random text');
 

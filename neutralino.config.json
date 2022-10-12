@@ -15,7 +15,8 @@
 		"writeToLogFile": true
 	},
 	"nativeAllowList": [
-	"filesystem.*"
+		"filesystem.*",
+		"window.*"
 	],
 	"globalVariables": {
 		"TEST1": "Hello"
@@ -28,10 +29,10 @@
 			"minWidth": 400,
 			"minHeight": 200,
 			"fullScreen": false,
-			"alwaysOnTop": false,
+			"alwaysOnTop": true,
 			"icon": "/public/neutralino.png",
 			"enableInspector": false,
-			"borderless": false,
+			"borderless": true,
 			"maximize": false,
 			"hidden": false,
 			"resizable": true,
