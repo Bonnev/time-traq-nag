@@ -23,11 +23,11 @@
 	},
 	"modes": {
 		"window": {
-			"title": "neutralinojs",
-			"width": 800,
-			"height": 500,
-			"minWidth": 400,
-			"minHeight": 200,
+			"title": "time-traq-nag",
+			"width": 450,
+			"height": 250,
+			"__minWidth__": 400,
+			"__minHeight__": 200,
 			"fullScreen": false,
 			"alwaysOnTop": true,
 			"icon": "/public/neutralino.png",
@@ -35,7 +35,7 @@
 			"borderless": true,
 			"maximize": false,
 			"hidden": false,
-			"resizable": true,
+			"resizable": false,
 			"exitProcessOnClose": true
 		},
 		"browser": {

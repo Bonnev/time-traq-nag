@@ -1,0 +1,17 @@
+span.timer.down {
+	/* background-color: rgba(0,255,0,0.4); */
+
+}
+
+span.timer.up {
+	background-color: rgba(0,0,255,0.4);
+	cursor: pointer;
+}
+
+span.timer:hover {
+	background-color: rgba(0,0,255,0.3);
+}
+
+span.timer:active {
+	background-color: rgba(0,0,255,0.2);
+}
