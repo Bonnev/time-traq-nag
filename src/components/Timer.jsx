@@ -9,6 +9,8 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 	// const [goingDown, setGoingDown] = useState(initialGoingDown);
 	// const [enabled, setEnabled] = useState(true);
 	const enabled = useRef(true);
+	const pausedBlinkTimeoutId = useRef();
+	const timerRef = useRef();
 	const [tasks, setTasks] = useState({ [currentTask]: initialSeconds });
 
 	useEffect(() => {
@@ -16,9 +18,12 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 	}, [initialTasks]);
 
 	useEffect(() => {
-		const task = tasks[currentTask] || {};
-		task.seconds = task.seconds || initialSeconds;
-		setTasks(ts => ({ ...ts, [currentTask]: task }));
+		setTasks(ts => {
+			const task = { ...ts[currentTask] } || {};
+			task.seconds ||= initialSeconds;
+			ts[currentTask] = task;
+			return ts;
+		});
 	}, [initialSeconds, currentTask]);
 
 	useEffect(() => {
@@ -60,8 +65,16 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 				return { ...ts, [currentTask]: task };
 			});
 			onEvent('RESUMED');
+			timerRef.current.classList.remove('paused');
+			timerRef.current.classList.remove('paused-blink');
+			pausedBlinkTimeoutId.current && clearTimeout(pausedBlinkTimeoutId.current);
 		} else {
 			onEvent('PAUSED');
+			timerRef.current.classList.add('paused');
+			timerRef.current.classList.remove('paused-blink');
+			pausedBlinkTimeoutId.current = setTimeout(() => {
+				timerRef.current.classList.add('paused-blink');
+			}, 2 * 60 * 1000); // 2 minutes
 		}
 		enabled.current = !enabled.current;
 	}, [currentTask]);
@@ -74,10 +87,16 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 		.map(t => `${t}: ${formatTime(tasks[t].seconds)}`)
 		.join('\n');
 
-	return <span className={'big-label timer up'}
+	return (
+		<span className='big-label timer up' ref={timerRef}
 			title={title} onClick={timerClickHandler}>
-		{formatTime((tasks[currentTask]?.seconds || 0))}
-	</span>;
+			{formatTime((tasks[currentTask]?.seconds || 0))}
+		</span>
+	);
+};
+
+Timer.defaultProps = {
+	initialTasks: []
 };
 
 Timer.propTypes = {
@@ -86,7 +105,10 @@ Timer.propTypes = {
 	currentTask: PropTypes.string.isRequired,
 	onSecondPassed: PropTypes.func.isRequired,
 	onEvent: PropTypes.func.isRequired,
-	initialTasks: PropTypes.arrayOf(PropTypes.object)
-}
+	initialTasks: PropTypes.arrayOf(PropTypes.objectOf(
+		PropTypes.shape({
+			seconds: PropTypes.number.isRequired
+		})))
+};
 
 export default Timer;

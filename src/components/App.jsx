@@ -14,7 +14,8 @@ const App = () => {
 	const [allTaskNames, setAllTaskNames] = useState([]);
 	// const currentTask = useRef(null);
 	const [currentTask, setCurrentTask] = useState(null);
-	const spanRef = useRef(null);
+	const taskInputRef = useRef(null);
+	const taskSpanRef = useRef(null);
 	const seconds = useRef(0);
 	const [initialTasks, setInitialTasks] = useState();
 
@@ -88,7 +89,8 @@ const App = () => {
 
 		const currentTaskLocal = event.target['task'].value;
 		setCurrentTask(event.target['task'].value);
-		spanRef.current.innerText = currentTaskLocal;
+		taskSpanRef.current.innerText = currentTaskLocal;
+		taskInputRef.current.value = '';
 		setAllTaskNames(all => all.includes(currentTaskLocal) ? all : [...all, currentTaskLocal]);
 
 		event.preventDefault();
@@ -100,7 +102,7 @@ const App = () => {
 		{/* {estimate} */}
 
 		<form onSubmit={taskSubmitHandler}>
-			<input type='text' list='tasks' name='task' placeholder='Task' />
+			<input type='text' list='tasks' name='task' placeholder='Task' ref={taskInputRef} />
 			<datalist id='tasks'>
 				{allTaskNames.map(taskName =>
 					<option key={taskName} value={taskName} />
@@ -110,7 +112,7 @@ const App = () => {
 			<button type='submit'>Submit</button>
 		</form>
 
-		<span className='big-label current-task' ref={spanRef}>{currentTask}</span>
+		<span className='big-label current-task' ref={taskSpanRef}>{currentTask}</span>
 		<Timer initialSeconds={0} currentTask={currentTask} onEvent={onEvent} initialTasks={initialTasks} onSecondPassed={onSecondPassed} initialGoingDown={false} />
 		<img src='/move-icon.png' id="move-icon" alt="move-icon" />
 	</div>);

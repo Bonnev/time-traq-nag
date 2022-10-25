@@ -15,3 +15,35 @@ span.timer:hover {
 span.timer:active {
 	background-color: rgba(0,0,255,0.2);
 }
+
+span.timer.paused {
+	background-color: rgba(255, 0, 0, 0.4);
+}
+
+span.timer.paused.paused-blink {
+	animation: paused-blink 2s linear 0s infinite normal none;
+}
+
+@keyframes paused-blink {
+	0%, 32% {
+		background-color: rgba(255, 0, 0, 0.4);
+	}
+	33%, 37% {
+		background-color: rgba(0,0,255,0.4);
+	}
+	38%, 47% {
+		background-color: rgba(255, 0, 0, 0.4);
+	}
+	48%, 52% {
+		background-color: rgba(0,0,255,0.4);
+	}
+	53%, 62% {
+		background-color: rgba(255, 0, 0, 0.4);
+	}
+	63%, 67% {
+		background-color: rgba(0,0,255,0.4);
+	}
+	68%, 100% {
+		background-color: rgba(255, 0, 0, 0.4);
+	}
+}
