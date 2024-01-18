@@ -96,19 +96,20 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 };
 
 Timer.defaultProps = {
-	initialTasks: []
+	initialTasks: [],
+	currentTask: ''
 };
 
 Timer.propTypes = {
 	initialSeconds: PropTypes.number.isRequired,
 	initialGoingDown: PropTypes.bool.isRequired,
-	currentTask: PropTypes.string.isRequired,
+	currentTask: PropTypes.string,
 	onSecondPassed: PropTypes.func.isRequired,
 	onEvent: PropTypes.func.isRequired,
-	initialTasks: PropTypes.arrayOf(PropTypes.objectOf(
+	initialTasks: PropTypes.objectOf(
 		PropTypes.shape({
 			seconds: PropTypes.number.isRequired
-		})))
+		}))
 };
 
 export default Timer;

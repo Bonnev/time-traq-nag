@@ -17,7 +17,7 @@ const App = () => {
 	const taskInputRef = useRef(null);
 	const taskSpanRef = useRef(null);
 	const seconds = useRef(0);
-	const [initialTasks, setInitialTasks] = useState();
+	const [initialTasks, setInitialTasks] = useState({});
 
 	// const onChangeHandler = useCallback((event) => {
 	// 	setEstimate(event.target.value);
@@ -30,14 +30,14 @@ const App = () => {
 				document.body.style.backgroundImage = `url("${URL.createObjectURL(data)}"`;
 			});
 
-		Neutralino.window.setDraggableRegion(document.querySelector('#move-icon'));
+		//Neutralino.window.setDraggableRegion(document.querySelector('#move-icon'));
 
 		(async () => {
 			try {
 				const result = {};
 				const file = await Neutralino.filesystem.readFile(dayjs().format('YY-MM-DD') + '-stats.txt') || '';
 				const lines = file.split('\n');
-				lines.forEach(l => result[l.split('\t')[0]] = {seconds: +l.split('\t')[1]});
+				lines.forEach(l => result[l.split('\t')[0]] = { seconds: +l.split('\t')[1] });
 				setInitialTasks(result);
 				setAllTaskNames(Object.keys(result));
 			} catch (e) { /* dasd */ }
@@ -50,6 +50,12 @@ const App = () => {
 		}
 
 		seconds.current = task.seconds;
+
+		const currentTime = dayjs();
+		if (currentTime.second() === 0 && (currentTime.minute() === 25 || currentTime.minute() === 55 )) {
+			var audio = new Audio('timer-short.mp3');
+			audio.play();
+		}
 
 		const duration = dayjs.duration(seconds.current * 1000);
 		if (duration.seconds() % 10 === 0) {
@@ -114,7 +120,7 @@ const App = () => {
 
 		<span className='big-label current-task' ref={taskSpanRef}>{currentTask}</span>
 		<Timer initialSeconds={0} currentTask={currentTask} onEvent={onEvent} initialTasks={initialTasks} onSecondPassed={onSecondPassed} initialGoingDown={false} />
-		<img src='/move-icon.png' id="move-icon" alt="move-icon" />
+		{/* <img src='/move-icon.png' id="move-icon" alt="move-icon" /> */}
 	</div>);
 };
 
