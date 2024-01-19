@@ -24,18 +24,18 @@
 	"modes": {
 		"window": {
 			"title": "time-traq-nag",
-			"width": 450,
-			"height": 250,
+			"width": 350,
+			"height": 220,
 			"__minWidth__": 400,
 			"__minHeight__": 200,
 			"fullScreen": false,
-			"alwaysOnTop": true,
+			"alwaysOnTop": false,
 			"icon": "/public/neutralino.png",
 			"enableInspector": false,
-			"borderless": true,
+			"borderless": false,
 			"maximize": false,
 			"hidden": false,
-			"resizable": false,
+			"resizable": true,
 			"exitProcessOnClose": true
 		},
 		"browser": {

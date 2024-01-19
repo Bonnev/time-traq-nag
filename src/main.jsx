@@ -10,6 +10,8 @@ dayjs.extend(duration);
 
 Neutralino.init();
 
+document.body.style.zoom = 0.7;
+
 ReactDOM.createRoot(document.body).render(
 	<React.StrictMode>
 		<App />

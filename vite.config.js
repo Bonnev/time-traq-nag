@@ -11,5 +11,8 @@ export default defineConfig({
 			envPrefixes: ['VITE_APP_']
 		}),
 		react()
-	]
+	],
+	build: {
+		minify: false
+	}
 });
