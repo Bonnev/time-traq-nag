@@ -54,6 +54,7 @@ const App = () => {
 		const currentTime = dayjs();
 		if (currentTime.second() === 0 && (currentTime.minute() === 25 || currentTime.minute() === 55 )) {
 			var audio = new Audio('timer-short.mp3');
+			audio.volume = 0.75;
 			audio.play();
 		}
 
