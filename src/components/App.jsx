@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useState } from 'react';
 import reactLogo from '/react.svg';
 import neutralinoLogo from '/neutralino-logo.gif';
+import { filesystem } from '@neutralinojs/lib';
 import '../styles/App.css';
 import Timer from './Timer';
 import dayjs from 'dayjs';
 
-Neutralino.filesystem.writeFile('./test.txt', 'random text');
+filesystem.writeFile('./test.txt', 'random text');
 
 const App = () => {
 	// const [estimate, setEstimate] = useState('');
@@ -35,7 +36,7 @@ const App = () => {
 		(async () => {
 			try {
 				const result = {};
-				const file = await Neutralino.filesystem.readFile(dayjs().format('YY-MM-DD') + '-stats.txt') || '';
+				const file = await filesystem.readFile(dayjs().format('YY-MM-DD') + '-stats.txt') || '';
 				const lines = file.split('\n');
 				lines.forEach(l => result[l.split('\t')[0]] = { seconds: +l.split('\t')[1] });
 				setInitialTasks(result);
@@ -60,14 +61,14 @@ const App = () => {
 
 		const duration = dayjs.duration(seconds.current * 1000);
 		if (duration.seconds() % 10 === 0) {
-			Neutralino.filesystem.appendFile(dayjs().format('YY-MM-DD') + '.txt', `${dayjs().format('YY-MM-DDTHH:mm:ss')}\t${currentTask}\t${duration.format('HH:mm:ss')}\n`);
+			filesystem.appendFile(dayjs().format('YY-MM-DD') + '.txt', `${dayjs().format('YY-MM-DDTHH:mm:ss')}\t${currentTask}\t${duration.format('HH:mm:ss')}\n`);
 		}
 		if (duration.seconds() % 60 === 0) {
 			(async () => {
 				let index = -1;
 				let lines = [];
 				try {
-					const file = await Neutralino.filesystem.readFile(dayjs().format('YY-MM-DD') + '-stats.txt') || '';
+					const file = await filesystem.readFile(dayjs().format('YY-MM-DD') + '-stats.txt') || '';
 					lines = file.split('\n');
 					index = lines.findIndex(l => l.split('\t')[0] === currentTask);
 				} catch (e) { /* dasd */ }
@@ -78,14 +79,14 @@ const App = () => {
 				} else {
 					lines[index] = newLine;
 				}
-				Neutralino.filesystem.writeFile(dayjs().format('YY-MM-DD') + '-stats.txt', lines.join('\n'));
+				filesystem.writeFile(dayjs().format('YY-MM-DD') + '-stats.txt', lines.join('\n'));
 			})();
 		}
 	}, [currentTask]);
 
 	const onEvent = useCallback((event) => {
 		if (event === 'PAUSED' || event === 'RESUMED') {
-			Neutralino.filesystem.appendFile(dayjs().format('YY-MM-DD') + '.txt', `${dayjs().format('YY-MM-DDTHH:mm:ss')}\t${event}\n`);
+			filesystem.appendFile(dayjs().format('YY-MM-DD') + '.txt', `${dayjs().format('YY-MM-DDTHH:mm:ss')}\t${event}\n`);
 		}
 	});
 
