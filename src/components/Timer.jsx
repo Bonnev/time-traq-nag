@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import '../styles/Timer.css';
 import usePrevValue from '../utils/usePrevValue.ts';
 
-const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, onEvent, initialTasks }) => {
+const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask = '', onEvent, initialTasks = [] }) => {
 	// const [seconds, setSeconds] = useState(initialSeconds);
 	// const [goingDown, setGoingDown] = useState(initialGoingDown);
 	// const [enabled, setEnabled] = useState(true);
@@ -93,11 +93,6 @@ const Timer = ({ initialSeconds, initialGoingDown, onSecondPassed, currentTask, 
 			{formatTime((tasks[currentTask]?.seconds || 0))}
 		</span>
 	);
-};
-
-Timer.defaultProps = {
-	initialTasks: [],
-	currentTask: ''
 };
 
 Timer.propTypes = {

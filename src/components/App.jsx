@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useState } from 'react';
-import reactLogo from '/react.svg';
-import neutralinoLogo from '/neutralino-logo.gif';
-import { filesystem } from '@neutralinojs/lib';
+import volume from '/src/images/volume.svg';
+import volumeMute from '/src/images/volume-mute.svg';
+import { filesystem, storage } from '@neutralinojs/lib';
 import '../styles/App.css';
 import Timer from './Timer';
 import dayjs from 'dayjs';
 
 filesystem.writeFile('./test.txt', 'random text');
+
+const SETTINGS_NAME = 'settings';
 
 const App = () => {
 	// const [estimate, setEstimate] = useState('');
@@ -19,6 +21,19 @@ const App = () => {
 	const taskSpanRef = useRef(null);
 	const seconds = useRef(0);
 	const [initialTasks, setInitialTasks] = useState({});
+
+	const [soundOn, setSoundOn] = useState(true);
+	const volumeUrl = soundOn ? volume : volumeMute;
+	const toggleSound = useCallback(() => {
+		setSoundOn(soundOnParam => {
+			const newValue = !soundOnParam;
+			// update settings file
+			storage
+				.setData(SETTINGS_NAME, `/* {"version":1} */\n{"soundOn":${newValue}}`)
+				.catch((e) => console.error(e));
+			return newValue;
+		});
+	});
 
 	// const onChangeHandler = useCallback((event) => {
 	// 	setEstimate(event.target.value);
@@ -41,7 +56,17 @@ const App = () => {
 				lines.forEach(l => result[l.split('\t')[0]] = { seconds: +l.split('\t')[1] });
 				setInitialTasks(result);
 				setAllTaskNames(Object.keys(result));
-			} catch (e) { /* dasd */ }
+			} catch (e) { console.error(e); }
+		})();
+
+		(async () => {
+			try {
+				const data = await storage.getData(SETTINGS_NAME);
+				const newLineIndex = data.indexOf('\n');
+				// const metadata = data.substring(0, newLineIndex + 1);
+				const settings = data.substring(newLineIndex + 1);
+				setSoundOn(Boolean(JSON.parse(settings).soundOn));
+			} catch (e) { console.error(e); }
 		})();
 	}, []);
 
@@ -53,7 +78,8 @@ const App = () => {
 		seconds.current = task.seconds;
 
 		const currentTime = dayjs();
-		if (currentTime.second() === 0 && (currentTime.minute() === 25 || currentTime.minute() === 55 )) {
+		// if (soundOn && currentTime.second() % 10 === 0) { // every 10 seconds (for testing)
+		if (soundOn && currentTime.second() === 0 && (currentTime.minute() === 25 || currentTime.minute() === 55 )) {
 			var audio = new Audio('timer-short.mp3');
 			audio.volume = 0.75;
 			audio.play();
@@ -82,7 +108,7 @@ const App = () => {
 				filesystem.writeFile(dayjs().format('YY-MM-DD') + '-stats.txt', lines.join('\n'));
 			})();
 		}
-	}, [currentTask]);
+	}, [currentTask, soundOn]);
 
 	const onEvent = useCallback((event) => {
 		if (event === 'PAUSED' || event === 'RESUMED') {
@@ -108,6 +134,7 @@ const App = () => {
 	return (<div className='flex-column'>
 		{/* <input type='text' name='estimate' placeholder='1w 2d 3h 4m 5s' onChange={onChangeHandler} /> */}
 		{/* {estimate} */}
+		<img src={volumeUrl} onClick={toggleSound} height="40" style={{ position: 'absolute', top: 7, left: 7, cursor: 'pointer' }} />
 
 		<form onSubmit={taskSubmitHandler}>
 			<input type='text' list='tasks' name='task' placeholder='Task' ref={taskInputRef} />

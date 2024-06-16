@@ -14,6 +14,7 @@
 	"nativeAllowList": [
 		"filesystem.*",
 		"window.*",
+		"storage.*",
 		"app.exit"
 	],
 	"globalVariables": {
@@ -21,11 +22,9 @@
 	},
 	"modes": {
 		"window": {
-			"title": "time-traq-nag",
-			"width": 470,
-			"height": 250,
-			"__minWidth__": 400,
-			"__minHeight__": 200,
+			"title": "TimeTraq Nag",
+			"width": 430,
+			"height": 210,
 			"fullScreen": false,
 			"alwaysOnTop": false,
 			"icon": "/public/neutralino.png",
@@ -39,7 +38,7 @@
 		}
 	},
 	"cli": {
-		"binaryName": "neutralinojs",
+		"binaryName": "time-traq-nag",
 		"resourcesPath": "/dist/",
 		"extensionsPath": "/extensions/",
 		"binaryVersion": "5.1.0",
