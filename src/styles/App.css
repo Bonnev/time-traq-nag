@@ -46,3 +46,17 @@ div#taskContainer button {
 	border-radius: 50%;
 	padding: 3px;
 }
+
+div#settingsJsonEditor[data-theme="html"] .je-form-input-label {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.je-indented-panel .row {
+	background-color: lightgray;
+	padding: 10px;
+}
+
+.je-indented-panel .row:not(:last-child) {
+	margin-bottom: 10px
+}

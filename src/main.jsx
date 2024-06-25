@@ -6,6 +6,9 @@ import './styles/index.css';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import ReactModal from 'react-modal';
+
+ReactModal.setAppElement('#root');
 
 dayjs.extend(duration);
 document.documentElement.style.zoom = '66%';

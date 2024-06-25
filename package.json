@@ -10,12 +10,14 @@
 		"vite-build": "NODE_ENV=production vite build"
 	},
 	"dependencies": {
+		"@json-editor/json-editor": "^2.15.1",
 		"@neutralinojs/lib": "^5.1.0",
+		"croner": "^8.0.2",
 		"dayjs": "^1.11.5",
-		"moment": "^2.29.4",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"react-modal": "^3.16.1"
 	},
 	"devDependencies": {
 		"@neutralinojs/neu": "^11.0.1",
