@@ -32,6 +32,65 @@ const settingsSchema = {
 	}
 };
 
+const synth = window.speechSynthesis;
+let voices = synth.getVoices();
+const NAGS = [
+	'Are you sure you\'re still doing this? Just checking!',
+	'Time flies—are we still on track here?',
+	'Hey, don\'t make me look bad! Is this task still right?',
+	'Yoo-hoo! Did we switch tasks and forget to tell me?',
+	'If I had a nickel for every time I asked you this... wait, are you still on this task?',
+	'Not to be a nag, but are you still doing what you said you were?',
+	'You wouldn\'t leave me hanging, right? Is this still accurate?',
+	'Guessing you\'re multitasking by now. Wanna update me?',
+	'This timer\'s loyal, but even I need some clarity. Still on this?',
+	'Knock, knock. Who\'s there? Task check! Are we good?',
+
+	'Update your task, or don\'t bother using this timer!',
+	'This is starting to feel pointless. Are you actually doing this?',
+	'The timer only works if you keep it accurate. Are you still on this?',
+	'Last chance: Is this task still valid?',
+	'You know this timer can\'t read your mind, right? Update it!',
+	'Seriously, are you even working on this anymore?',
+	'If you\'ve moved on, tell me! I\'m not a mind reader.',
+	'I\'m starting to think this task is just wishful thinking.',
+	'Stop ignoring me—are you still on this task or not?',
+	'Do I need to revoke your timer privileges?',
+
+	'Oh sure, you\'re totally still doing this. Definitely.',
+	'I believe you\'re still on this task... except I don\'t.',
+	'Keeping this task active forever, huh? Bold choice.',
+	'You must be working so hard on this right now.',
+	'Don\'t mind me, I\'ll just sit here with this outdated task.',
+	'Still on this? Suuuuure you are.',
+	'What\'s next, pretending this task will finish itself?',
+	'Wow, this must be the most interesting task ever. Still not done?',
+	'Yeah, okay. Definitely no chance you\'ve moved on by now.',
+	'Keeping me updated must be harder than the task itself.',
+
+	'Hey, are we still on track? Just making sure.',
+	'You haven\'t switched tasks, right? Right?',
+	'It\'s been a while… Are you sure this is still the plan?',
+	'I hope I\'m not bothering you, but are we still good here?',
+	'This timer works better if it matches what you\'re doing—still good?',
+	'I\'m here to help, but I need to know if this task is still current.',
+	'Everything okay? Did we forget to update this?',
+	'I\'m worried we\'re off-track. Still on this task?',
+	'If things changed, just let me know. I\'ve got your back!',
+	'I hate to nag, but I\'m feeling like this might be outdated.',
+
+	'How many times do I have to ask you? Update the task!',
+	'Do you even know what you\'re doing anymore?',
+	'This timer is useless if you don\'t keep it updated!',
+	'Why do I even bother if you won\'t update the task?',
+	'Are you messing with me? Update this task now!',
+	'If you\'re not going to use this app properly, why even use it?',
+	'I\'m getting frustrated. Is this task still accurate or not?',
+	'You know what? Fine. Just ignore me then!',
+	'This timer\'s a joke if you can\'t stay on top of your tasks.',
+	'I give up! Let me know when you decide to be honest with me.'
+];
+
 const App = () => {
 	// const [estimate, setEstimate] = useState('');
 	// const [tasks, setTasks] = useState({});
@@ -40,6 +99,7 @@ const App = () => {
 	const [currentTask, setCurrentTask] = useState(null);
 	const taskInputRef = useRef(null);
 	const taskSpanRef = useRef(null);
+	const timerStateRef = useRef(true);
 	const seconds = useRef(0);
 	const [initialTasks, setInitialTasks] = useState({});
 
@@ -58,9 +118,17 @@ const App = () => {
 
 		if (soundOn) {
 			return Cron(cron, () => {
-				var audio = new Audio('timer-short.mp3');
+				/*var audio = new Audio('timer-short.mp3');
 				audio.volume = 0.75;
-				audio.play();
+				audio.play();*/
+				const not = timerStateRef.current === false ? 'not' : '';
+				const currentTask = !taskSpanRef.current?.innerText ? 'nothing' : taskSpanRef.current.innerText;
+				const randomNag = NAGS[Math.floor(Math.random() * NAGS.length)];
+				let utterance = new SpeechSynthesisUtterance(`Currently ${not} working on, ${currentTask}! ${randomNag}`);
+				let englishVoices = voices.filter(v => v.lang === 'en-US');
+				let randomVoice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+				utterance.voice = randomVoice;
+				synth.speak(utterance);
 			});
 		}
 	}, []);
@@ -195,6 +263,7 @@ const App = () => {
 	const onEvent = useCallback((event) => {
 		if (event === 'PAUSED' || event === 'RESUMED') {
 			filesystem.appendFile(dayjs().format('YY-MM-DD') + '.txt', `${dayjs().format('YY-MM-DDTHH:mm:ss')}\t${event}\n`);
+			timerStateRef.current = event == 'RESUMED';
 		}
 	}, []);
 
