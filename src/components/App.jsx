@@ -62,7 +62,7 @@ const NAGS = [
 	'Keeping this task active forever, huh? Bold choice.',
 	'You must be working so hard on this right now.',
 	'Don\'t mind me, I\'ll just sit here with this outdated task.',
-	'Still on this? Suuuuure you are.',
+	'Still on this? Sure you are.',
 	'What\'s next, pretending this task will finish itself?',
 	'Wow, this must be the most interesting task ever. Still not done?',
 	'Yeah, okay. Definitely no chance you\'ve moved on by now.',
@@ -133,10 +133,15 @@ const App = () => {
 		}
 	}, []);
 
-	const toggleSound = useCallback(() => {
+	const toggleSound = useCallback((_, enable) => {
 		setSettings(prevSettings => {
 			const settingsJson = Object.assign({}, prevSettings);
-			settingsJson.soundOn = !soundOn;
+			settingsJson.soundOn = enable !== undefined ? enable : !soundOn;
+
+			if (!settingsJson.soundOn) {
+				synth.cancel();
+			}
+
 			// update settings file
 			storage
 				.setData(SETTINGS_NAME, `/* {"version":1} */\n${JSON.stringify(settingsJson)}`)
@@ -147,6 +152,15 @@ const App = () => {
 			return settingsJson;
 		});
 	}, [soundOn, updateTimerJob]);
+
+	const snoozeOnClick = useCallback(() => {
+		if (settings.soundOn) {
+			toggleSound();
+			synth.cancel();
+
+			setTimeout(() => toggleSound(null, true), 1800000); // 30 mins
+		}
+	}, [settings, toggleSound]);
 
 	const storeSettings = useCallback(() => {
 		const settingsJson = settingsJsonEditor.current.getValue();
@@ -291,6 +305,17 @@ const App = () => {
 		marginRight: 7
 	};
 
+	const snoozeButtonStyle = {
+		margin: 'auto',
+		padding: '5px',
+		verticalAlign: 'middle',
+		height: '100%',
+		boxSizing: 'border-box',
+		fontWeight: 'bold',
+		display: 'inline-flex',
+		alignItems: 'center',
+};
+
 	return (<div className='flex-column'>
 		{/* <input type='text' name='estimate' placeholder='1w 2d 3h 4m 5s' onChange={onChangeHandler} /> */}
 		{/* {estimate} */}
@@ -304,6 +329,9 @@ const App = () => {
 			</span>
 			<span id='soundOnContainer' style={configContainersStyle}>
 				<img src={settingsIcon} onClick={openSettingsModal} height="40" />
+			</span>
+			<span id='soundOnContainer' style={{ ...configContainersStyle, verticalAlign: 'top' }}>
+				<div style={snoozeButtonStyle} onClick={snoozeOnClick}>Snooze voice</div>
 			</span>
 		</div>
 
