@@ -3,7 +3,7 @@ import { useState } from 'react';
 import settingsIcon from '/src/images/settings.svg';
 import volumeOnIcon from '/src/images/volume.svg';
 import volumeMuteIcon from '/src/images/volume-mute.svg';
-import { filesystem, storage } from '@neutralinojs/lib';
+import { filesystem, storage, window as neuWindow } from '@neutralinojs/lib';
 import '../styles/App.css';
 import Timer from './Timer';
 import dayjs from 'dayjs';
@@ -202,7 +202,9 @@ const App = () => {
 		fetch('https://bing.biturl.top?format=image&resolution=1366')
 			.then(i=>i.blob())
 			.then(data => {
-				document.body.style.backgroundImage = `url("${URL.createObjectURL(data)}"`;
+				// document.body.style.backgroundImage = `url("${URL.createObjectURL(data)}"`;
+				// document.body.style.opacity = 0.5;
+				document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
 			});
 
 		//Neutralino.window.setDraggableRegion(document.querySelector('#move-icon'));
@@ -232,6 +234,8 @@ const App = () => {
 				//alarmJob.current.schedule(alarmJob.current);
 			} catch (e) { console.error(e); }
 		})();
+
+		neuWindow.setDraggableRegion('html');
 	}, []);
 
 	const onSecondPassed = useCallback(task => {

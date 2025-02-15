@@ -34,15 +34,16 @@
 			"hidden": false,
 			"resizable": true,
 			"center": true,
-			"exitProcessOnClose": false
+			"exitProcessOnClose": false,
+			"transparent": true
 		}
 	},
 	"cli": {
 		"binaryName": "time-traq-nag",
 		"resourcesPath": "/dist/",
 		"extensionsPath": "/extensions/",
-		"binaryVersion": "5.1.0",
-		"clientVersion": "5.1.0",
+		"binaryVersion": "5.6.0",
+		"clientVersion": "5.6.0",
 		"frontendLibrary": {
 			"patchFile": "./index.html",
 			"projectPath": "./",

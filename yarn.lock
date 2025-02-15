@@ -426,10 +426,10 @@
   dependencies:
     core-js "^3.27.2"
 
-"@neutralinojs/lib@^5.1.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@neutralinojs/lib/-/lib-5.2.0.tgz#a50ffb84a18f29de2c9e756bbe687322e0f14e98"
-  integrity sha512-RlKpkPZSy3BD4ZOgX//LcLBOcffoErLL2xxYplco5fUvYv0BFNW1POGg/Iw7PdhleJMjSfgZavQe4+Kre8/D0w==
+"@neutralinojs/lib@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@neutralinojs/lib/-/lib-5.6.0.tgz#4649fef05add883db4e16683be9781df53c5920c"
+  integrity sha512-EyIAlurZKGfPWn9VuGhXwNO9LdwVI7oVRsR18KJkit3E3R80FXUpjfCHdAr9FtNsEqqWxJbeYMtFhp9ByndPgg==
 
 "@neutralinojs/neu@^11.0.1":
   version "11.2.0"
