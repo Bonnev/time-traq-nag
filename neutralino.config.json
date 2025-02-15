@@ -51,5 +51,10 @@
 			"devCommand": "yarn vite-dev",
 			"buildCommand": "yarn vite-build"
 		}
-	}
+	},
+	"enableExtensions": true,
+	"extensions": [{
+		"id": "js.neutralino.sampleextension",
+		"command": "bash --login -i -c \"nvm use 20 && while true; do echo hi; done\""
+	}]
 }
